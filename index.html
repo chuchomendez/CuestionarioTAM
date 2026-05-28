@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cuestionario TAM — AR Arrays</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f9fb;
+    color: #1a1d23;
+    padding: 40px 20px 80px;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 48px 52px;
+  }
+
+  /* HEADER */
+  .header-badge {
+    display: inline-block;
+    background: #e8f5f0;
+    color: #1a7f5a;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    color: #111;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #667;
+    margin-bottom: 6px;
+  }
+  .divider {
+    border: none;
+    border-top: 2px solid #eef0f3;
+    margin: 28px 0;
+  }
+
+  /* INTRO BOX */
+  .intro-box {
+    background: #f4f9ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 13.5px;
+    color: #334;
+    margin-bottom: 32px;
+  }
+  .intro-box strong { color: #1e40af; }
+
+  /* DATOS GENERALES */
+  .datos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .dato-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: #888;
+    margin-bottom: 6px;
+  }
+  .dato-field .line {
+    border-bottom: 1.5px solid #c8cdd6;
+    height: 28px;
+  }
+
+  /* SECCIONES */
+  .section {
+    margin-bottom: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+  }
+  .section-ref {
+    font-size: 11.5px;
+    color: #888;
+    margin-bottom: 20px;
+    padding-left: 44px;
+    font-style: italic;
+  }
+
+  /* COLORS PER SECTION */
+  .s1 .section-num { background: #ede9fe; color: #6d28d9; }
+  .s2 .section-num { background: #dcfce7; color: #15803d; }
+  .s3 .section-num { background: #fef9c3; color: #a16207; }
+  .s4 .section-num { background: #fee2e2; color: #b91c1c; }
+  .s5 .section-num { background: #dbeafe; color: #1d4ed8; }
+  .s6 .section-num { background: #fce7f3; color: #9d174d; }
+
+  /* PREGUNTAS */
+  .pregunta {
+    margin-bottom: 28px;
+  }
+  .pregunta-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .p-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: #aaa;
+    min-width: 28px;
+    padding-top: 2px;
+  }
+  .p-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #1a1d23;
+    line-height: 1.5;
+  }
+  .p-hint {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+    margin-left: 38px;
+    margin-bottom: 8px;
+  }
+  .answer-lines {
+    margin-left: 38px;
+  }
+  .answer-line {
+    display: block;
+    border-bottom: 1px solid #dde1e8;
+    height: 26px;
+    margin-bottom: 6px;
+  }
+
+  /* REFERENCIAS */
+  .refs {
+    background: #f8f9fb;
+    border: 1px solid #e5e8ed;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-top: 48px;
+  }
+  .refs h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #555;
+    margin-bottom: 16px;
+  }
+  .ref-item {
+    font-size: 12.5px;
+    color: #445;
+    margin-bottom: 12px;
+    padding-left: 16px;
+    border-left: 3px solid #d0d4dc;
+    line-height: 1.6;
+  }
+  .ref-item em { color: #888; }
+
+  /* CONSENTIMIENTO */
+  .consent {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 12.5px;
+    color: #78350f;
+    margin-top: 32px;
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #bbb;
+    margin-top: 40px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { box-shadow: none; padding: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header-badge">Investigación Cualitativa · TAM</div>
+  <h1>Cuestionario de Aceptación Tecnológica<br><span style="color:#6d28d9">AR Arrays — Realidad Aumentada para Aprendizaje</span></h1>
+  <p class="subtitle">Modelo de Aceptación Tecnológica (Technology Acceptance Model) adaptado al contexto educativo de Realidad Aumentada</p>
+
+  <hr class="divider" />
+
+  <div class="intro-box">
+    <strong>Propósito:</strong> Este instrumento tiene como objetivo explorar, desde una perspectiva cualitativa, la experiencia de los estudiantes al interactuar con la aplicación <em>AR Arrays</em>, diseñada para enseñar estructuras de datos mediante Realidad Aumentada. No existen respuestas correctas o incorrectas; se valoran sus opiniones, percepciones y experiencias personales.<br><br>
+    <strong>Confidencialidad:</strong> Sus respuestas serán tratadas con total confidencialidad y utilizadas únicamente con fines académicos de investigación.
+  </div>
+
+  <!-- DATOS GENERALES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:#f1f5f9;color:#475569">👤</div>
+      <div class="section-title">Datos Generales del Participante</div>
+    </div>
+    <div class="datos-grid">
+      <div class="dato-field">
+        <label>Edad</label>
+        <div class="line"></div>
+      </div>
+      <div class="dato-field">
+        <label>Sexo</label>
+        <div class="line"></div>
+      </div>
+      <div class="dato-field">
+        <label>Semestre / Grado</label>
+        <div class="line"></div>
+      </div>
+      <div class="dato-field">
+        <label>Carrera o Área</label>
+        <div class="line"></div>
+      </div>
+      <div class="dato-field" style="grid-column: span 2">
+        <label>¿Ha utilizado antes alguna aplicación de Realidad Aumentada?</label>
+        <div class="line"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SECCIÓN 1: UTILIDAD PERCIBIDA -->
+  <div class="section s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Utilidad Percibida (Perceived Usefulness)</div>
+    </div>
+    <p class="section-ref">Basado en: Davis (1989); Scherer et al. (2019); Sirakaya & Sirakaya (2020); Granić & Marangunić (2019)</p>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P1.</span>
+        <span class="p-text">¿De qué manera considera que la aplicación AR Arrays le ayudó a comprender el concepto de arreglos como estructura de datos?</span>
+      </div>
+      <p class="p-hint">Describa con detalle qué aspectos le resultaron útiles para su aprendizaje.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P2.</span>
+        <span class="p-text">¿Cómo describiría el impacto de visualizar los arreglos como lockers en Realidad Aumentada, comparado con aprender el concepto de forma tradicional (pizarrón, libro)?</span>
+      </div>
+      <p class="p-hint">Puede mencionar diferencias en comprensión, motivación o retención del tema.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P3.</span>
+        <span class="p-text">¿En qué situaciones concretas del curso de Algoritmos cree que esta aplicación podría serle más útil?</span>
+      </div>
+      <p class="p-hint">Por ejemplo: antes de un examen, para resolver un ejercicio, al estudiar solo o en grupo.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SECCIÓN 2: FACILIDAD DE USO PERCIBIDA -->
+  <div class="section s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Facilidad de Uso Percibida (Perceived Ease of Use)</div>
+    </div>
+    <p class="section-ref">Basado en: Davis (1989); Pellas et al. (2020); Ibáñez et al. (2020)</p>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P4.</span>
+        <span class="p-text">Describa su experiencia al navegar por las diferentes secciones de la aplicación (Inicio, Aprender, Simulador, Quiz, AR). ¿Le resultó intuitivo encontrar lo que buscaba?</span>
+      </div>
+      <p class="p-hint">Mencione si tuvo dificultades y en qué partes específicas.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P5.</span>
+        <span class="p-text">¿Qué tan rápido pudo comenzar a interactuar con el simulador y la experiencia de Realidad Aumentada sin necesidad de instrucciones adicionales?</span>
+      </div>
+      <p class="p-hint">Narre el proceso desde que abrió la app hasta que logró usarla con confianza.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P6.</span>
+        <span class="p-text">¿Existió algún elemento de la interfaz —botones, instrucciones, textos o la sección de AR— que le generara confusión o requiriera más explicación? ¿Por qué?</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SECCIÓN 3: ACTITUD HACIA EL USO -->
+  <div class="section s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Actitud hacia el Uso de la Tecnología</div>
+    </div>
+    <p class="section-ref">Basado en: Davis et al. (1989); Radianti et al. (2020); Mystakidis (2022)</p>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P7.</span>
+        <span class="p-text">¿Cómo se sintió emocionalmente al usar la aplicación de Realidad Aumentada para estudiar arreglos? ¿Le generó curiosidad, entusiasmo, incomodidad o algún otro sentimiento?</span>
+      </div>
+      <p class="p-hint">Sea honesto; todas las percepciones son válidas para la investigación.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P8.</span>
+        <span class="p-text">¿Qué opinión le merece el uso de tecnologías como la Realidad Aumentada dentro del salón de clase o como herramienta de estudio?</span>
+      </div>
+      <p class="p-hint">Puede hablar de ventajas, desventajas o condiciones necesarias para que funcione bien en su contexto.</p>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SECCIÓN 4: INTENCIÓN DE USO -->
+  <div class="section s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Intención de Uso (Behavioral Intention to Use)</div>
+    </div>
+    <p class="section-ref">Basado en: Venkatesh & Davis (2000); Tlili et al. (2022); Scherer et al. (2019)</p>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P9.</span>
+        <span class="p-text">Si esta aplicación estuviera disponible de forma permanente, ¿la usaría para estudiar otros temas del curso de Algoritmos? ¿Qué temas le gustaría ver representados en Realidad Aumentada?</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P10.</span>
+        <span class="p-text">¿Recomendaría a un compañero de clase usar AR Arrays para aprender el tema de arreglos? ¿Qué le diría para convencerlo o desaconsejarlo?</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SECCIÓN 5: CONTEXTO EDUCATIVO Y AR -->
+  <div class="section s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Factores del Contexto Educativo y Realidad Aumentada</div>
+    </div>
+    <p class="section-ref">Basado en: Sirakaya & Sirakaya (2020); Pellas et al. (2020); Radianti et al. (2020)</p>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P11.</span>
+        <span class="p-text">¿Qué obstáculos o limitaciones encontró al usar la aplicación en su dispositivo móvil? (Por ejemplo: iluminación, acceso a cámara, conexión a internet, tamaño de pantalla.)</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P12.</span>
+        <span class="p-text">¿Considera que el pseudocódigo utilizado en la sección "Aprender" y en el Quiz facilita la comprensión del tema sin depender de un lenguaje de programación específico? Explique su respuesta.</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SECCIÓN 6: CIERRE Y MEJORAS -->
+  <div class="section s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Retroalimentación General y Sugerencias de Mejora</div>
+    </div>
+    <p class="section-ref">Preguntas de cierre para triangulación cualitativa</p>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P13.</span>
+        <span class="p-text">En general, ¿cuál fue el aspecto que más le gustó de la aplicación y cuál cambiaría o agregaría para mejorar su experiencia de aprendizaje?</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+
+    <div class="pregunta">
+      <div class="pregunta-header">
+        <span class="p-num">P14.</span>
+        <span class="p-text">¿Hay algo más que quiera compartir sobre su experiencia usando AR Arrays que no haya sido cubierto en las preguntas anteriores?</span>
+      </div>
+      <div class="answer-lines">
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSENTIMIENTO -->
+  <div class="consent">
+    <strong>Consentimiento informado:</strong> Al responder este cuestionario, el participante acepta voluntariamente colaborar en esta investigación académica. Los datos se usarán de forma anónima y confidencial exclusivamente para fines de análisis cualitativo. El investigador se compromete a resguardar la identidad de los participantes conforme a los principios éticos de la investigación educativa.
+    <br><br>
+    <strong>Firma del participante:</strong> _________________________________ &nbsp;&nbsp;&nbsp; <strong>Fecha:</strong> _______________
+  </div>
+
+  <!-- REFERENCIAS -->
+  <div class="refs">
+    <h3>Referencias Académicas</h3>
+
+    <p style="font-size:11.5px;color:#888;margin-bottom:18px;font-style:italic">
+      * Los tres primeros son las fuentes teóricas fundacionales del TAM, requeridas en cualquier estudio que aplique el modelo. Las demás son publicaciones recientes (2019–2022) sobre TAM y Realidad Aumentada en educación.
+    </p>
+
+    <!-- FUNDAMENTOS TEÓRICOS TAM (obligatorios) -->
+    <div class="ref-item" style="border-left-color:#6d28d9">
+      <strong>Davis, F. D. (1989).</strong> Perceived usefulness, perceived ease of use, and user acceptance of information technology. <em>MIS Quarterly, 13</em>(3), 319–340. https://doi.org/10.2307/249008
+      <br><em style="font-size:11px;color:#9ca3af">Fuente original del TAM — define Utilidad Percibida y Facilidad de Uso Percibida.</em>
+    </div>
+
+    <div class="ref-item" style="border-left-color:#6d28d9">
+      <strong>Davis, F. D., Bagozzi, R. P., & Warshaw, P. R. (1989).</strong> User acceptance of computer technology: A comparison of two theoretical models. <em>Management Science, 35</em>(8), 982–1003. https://doi.org/10.1287/mnsc.35.8.982
+      <br><em style="font-size:11px;color:#9ca3af">Valida el TAM frente al modelo TRA; establece Actitud e Intención de Uso.</em>
+    </div>
+
+    <div class="ref-item" style="border-left-color:#6d28d9">
+      <strong>Venkatesh, V., & Davis, F. D. (2000).</strong> A theoretical extension of the technology acceptance model: Four longitudinal field studies. <em>Management Science, 46</em>(2), 186–204. https://doi.org/10.1287/mnsc.46.2.186.11926
+      <br><em style="font-size:11px;color:#9ca3af">TAM2 — extiende el modelo con norma subjetiva e influencia social.</em>
+    </div>
+
+    <!-- PUBLICACIONES RECIENTES (2019–2022) -->
+    <div class="ref-item">
+      <strong>Granić, A., & Marangunić, N. (2019).</strong> Technology acceptance model in educational context: A systematic literature review. <em>British Journal of Educational Technology, 50</em>(5), 2572–2593. https://doi.org/10.1111/bjet.12806
+      <br><em style="font-size:11px;color:#9ca3af">Revisión sistemática de 2019 sobre aplicaciones del TAM en contextos educativos.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Scherer, R., Siddiq, F., & Tondeur, J. (2019).</strong> The technology acceptance model (TAM): A meta-analytic structural equation modeling approach to explaining teachers' adoption of digital technology in education. <em>Computers & Education, 128</em>, 13–35. https://doi.org/10.1016/j.compedu.2018.09.009
+      <br><em style="font-size:11px;color:#9ca3af">Metaanálisis con 114 estudios; confirma la validez del TAM en educación digital.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Ibáñez, M. B., Uriarte Portillo, A., Zatarain Cabada, R., & Barrón, M. L. (2020).</strong> Impact of augmented reality technology on academic achievement and motivation of students from public and private Mexican schools: A case study in a middle-school geometry course. <em>Computers & Education, 145</em>, 103734. https://doi.org/10.1016/j.compedu.2019.103734
+      <br><em style="font-size:11px;color:#9ca3af">Estudio de impacto de RA en rendimiento académico y motivación estudiantil.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Pellas, N., Kazanidis, I., & Palaigeorgiou, G. (2020).</strong> A systematic literature review of mixed reality environments in K-12 education. <em>Education and Information Technologies, 25</em>, 2481–2520. https://doi.org/10.1007/s10639-019-10076-4
+      <br><em style="font-size:11px;color:#9ca3af">Revisión de 84 estudios sobre realidad mixta en educación básica y media.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Radianti, J., Majchrzak, T. A., Fromm, J., & Wohlgenannt, I. (2020).</strong> A systematic review of immersive virtual reality applications for higher education: Design elements, lessons learned, and research agenda. <em>Computers & Education, 147</em>, 103778. https://doi.org/10.1016/j.compedu.2019.103778
+      <br><em style="font-size:11px;color:#9ca3af">Revisión de 38 estudios sobre entornos inmersivos en educación superior.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Sirakaya, M., & Sirakaya, D. A. (2020).</strong> Augmented reality in STEM education: A systematic review. <em>Interactive Learning Environments, 30</em>(8), 1556–1569. https://doi.org/10.1080/10494820.2020.1722713
+      <br><em style="font-size:11px;color:#9ca3af">Revisión sistemática sobre el uso de RA en materias STEM; analiza usabilidad y percepción.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Mystakidis, S. (2022).</strong> Metaverse. <em>Encyclopedia, 2</em>(1), 486–497. https://doi.org/10.3390/encyclopedia2010031
+      <br><em style="font-size:11px;color:#9ca3af">Contextualiza las tecnologías inmersivas actuales (RA, RV, metaverso) en el ecosistema educativo.</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Tlili, A., Shehata, B., Adarkwah, M. A., Bozkurt, A., Hickey, D. T., Huang, R., & Burgos, D. (2022).</strong> Is Metaverse in education a blessing or a curse: A combined content and bibliometric analysis. <em>Smart Learning Environments, 9</em>(1), 24. https://doi.org/10.1186/s40561-022-00205-x
+      <br><em style="font-size:11px;color:#9ca3af">Analiza la aceptación y barreras de tecnologías inmersivas en educación (2022).</em>
+    </div>
+
+    <div class="ref-item">
+      <strong>Cabero-Almenara, J., Fernández-Batanero, J. M., Marín-Díaz, V., & Morales-Lozano, J. A. (2022).</strong> Acceptance of augmented reality technology by university students: A study applying the technology acceptance model and the theory of planned behavior. <em>International Journal of Environmental Research and Public Health, 19</em>(6), 3491. https://doi.org/10.3390/ijerph19063491
+      <br><em style="font-size:11px;color:#9ca3af">Aplica TAM + TPB para medir aceptación de RA en estudiantes universitarios — muy relevante para este estudio.</em>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Cuestionario TAM adaptado para investigación cualitativa · AR Arrays · Instrumento elaborado para curso de Algoritmos
+  </div>
+
+</div>
+</body>
+</html>
